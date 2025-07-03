@@ -15,7 +15,7 @@ export default function Moon3D() {
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent z-10" />
         <Canvas camera={{ position: [0, 0, 3], fov: 50 }}>
         <ambientLight intensity={0.3} />
-        <directionalLight position={[2, -2, -5]} intensity={1.2} />
+        <directionalLight position={[2, 2, 5]} intensity={1.2} />
         <Stars radius={100} depth={50} count={5000} factor={4} fade />
         <ScrollZoomCamera />
         <RotatingMoon />
