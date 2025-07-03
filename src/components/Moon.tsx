@@ -22,7 +22,7 @@ export default function Moon() {
     <div className="fixed top-0 left-0 h-screen w-1/2 flex items-center justify-center z-0">
       <div
         ref={moonRef}
-        className="h-96 w-96 rounded-full bg-gradient-to-br from-gray-200 to-gray-700 shadow-2xl"
+        className="h-96 w-96 rounded-full bg-gradient-to-br from-gray-100 to-gray-3000 shadow-2xl"
       />
     </div>
   );
