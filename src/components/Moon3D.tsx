@@ -14,8 +14,8 @@ export default function Moon3D() {
     <div className="relative w-full h-full overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent z-10" />
         <Canvas camera={{ position: [0, 0, 3], fov: 50 }}>
-        <ambientLight intensity={0.2} />
-        <directionalLight position={[2, 2, 5]} intensity={1.2} />
+        <ambientLight intensity={0.3} />
+        <directionalLight position={[2, -2, -5]} intensity={1.2} />
         <Stars radius={100} depth={50} count={5000} factor={4} fade />
         <ScrollZoomCamera />
         <RotatingMoon />
@@ -43,11 +43,11 @@ function RotatingMoon() {
 
   return (
     <mesh ref={meshRef}>
-      <sphereGeometry args={[1, 128, 128]} />
+      <sphereGeometry args={[1, 64, 64]} />
       <meshStandardMaterial
         map={colorMap}
         normalMap={normalMap}
-        metalness={0.2}
+        metalness={0.4}
         roughness={1}
       />
     </mesh>
