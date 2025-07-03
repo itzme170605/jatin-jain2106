@@ -37,7 +37,7 @@ function RotatingMoon() {
 
   useFrame(({ clock }) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y = clock.getElapsedTime() * 0.3;
+      meshRef.current.rotation.y = clock.getElapsedTime() * 0.1;
     }
   });
 
