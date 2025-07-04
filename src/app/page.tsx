@@ -11,7 +11,9 @@ export default function Home() {
 
   return (
     <div className="bg-black text-white min-h-screen relative">
-      <Moon3D />
+      <div className="fixed top-0 left-0 w-full h-full z-0">
+        <Moon3D />
+      </div>  
 
       <div className="w-full sm:w-1/2 px-6 sm:px-10 py-20 space-y-48">
 
