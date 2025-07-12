@@ -3,7 +3,26 @@ import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
 import { Github, ExternalLink, Play } from 'lucide-react';
 
-const projectData = {
+interface Project {
+  title: string;
+  description: string;
+  tech: string[];
+  image: string;
+  github: string;
+  demo: string;
+  type: string;
+}
+
+interface ProjectCategory {
+  title: string;
+  projects: Project[];
+}
+
+interface ProjectData {
+  [key: string]: ProjectCategory;
+}
+
+const projectData: ProjectData = {
   'full-stack-dev': {
     title: 'Full Stack & Mobile Development',
     projects: [
@@ -11,7 +30,7 @@ const projectData = {
         title: 'Downtheline',
         description: 'Aesthetic collaborative watchlist app built with Flutter & Firebase',
         tech: ['Flutter', 'Firebase', 'Dart'],
-        image: '/moon_texture.jpg', // Replace with actual project images
+        image: '/moon_texture.jpg', 
         github: 'https://github.com/itzme170605',
         demo: '#',
         type: 'Mobile App'
@@ -111,7 +130,12 @@ const projectData = {
   }
 };
 
-function ProjectCard({ project, index }) {
+interface ProjectCardProps {
+  project: Project;
+  index: number;
+}
+
+function ProjectCard({ project, index }: ProjectCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, x: 50 }}
@@ -135,7 +159,7 @@ function ProjectCard({ project, index }) {
       <p className="text-gray-300 mb-4 text-sm leading-relaxed">{project.description}</p>
       
       <div className="flex flex-wrap gap-2 mb-4">
-        {project.tech.map((tech, i) => (
+        {project.tech.map((tech: string, i: number) => (
           <span key={i} className="bg-blue-600 bg-opacity-20 text-blue-300 px-2 py-1 rounded text-xs">
             {tech}
           </span>
@@ -166,10 +190,15 @@ function ProjectCard({ project, index }) {
   );
 }
 
-function HorizontalTimeline({ categoryKey, category }) {
-  const scrollRef = useRef(null);
+interface HorizontalTimelineProps {
+  categoryKey: string;
+  category: ProjectCategory;
+}
 
-  const scroll = (direction) => {
+function HorizontalTimeline({ categoryKey, category }: HorizontalTimelineProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
     const scrollAmount = 300;
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
@@ -200,12 +229,14 @@ function HorizontalTimeline({ categoryKey, category }) {
         <button 
           onClick={() => scroll('left')}
           className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-gray-900 bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all"
+          aria-label="Scroll left"
         >
           ←
         </button>
         <button 
           onClick={() => scroll('right')}
           className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-gray-900 bg-opacity-80 text-white p-2 rounded-full hover:bg-opacity-100 transition-all"
+          aria-label="Scroll right"
         >
           →
         </button>
@@ -216,7 +247,7 @@ function HorizontalTimeline({ categoryKey, category }) {
           className="flex gap-8 overflow-x-auto scrollbar-hide pb-4 px-12"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {category.projects.map((project, index) => (
+          {category.projects.map((project: Project, index: number) => (
             <div key={index} className="relative flex-shrink-0">
               {/* Timeline Node */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-blue-500 rounded-full border-4 border-black z-10"></div>

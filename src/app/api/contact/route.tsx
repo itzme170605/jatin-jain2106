@@ -1,20 +1,21 @@
 // app/api/contact/route.ts
 import { NextRequest, NextResponse } from 'next/server';
+import { ObjectId } from 'mongodb';
+import clientPromise from '../../../../lib/mongodb';
 
 interface ContactSubmission {
-  id: string;
+  _id?: ObjectId;
+  id?: string;
   name: string;
   email: string;
   subject: string;
   message: string;
   projectType: string;
-  timestamp: string;
+  timestamp: Date;
   status: 'new' | 'read' | 'replied' | 'archived';
-  updatedAt?: string;
+  updatedAt?: Date;
+  ipAddress?: string;
 }
-
-// In-memory storage (replace with database in production)
-let contactSubmissions: ContactSubmission[] = [];
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,41 +39,51 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Connect to MongoDB
+    const client = await clientPromise;
+    const db = client.db('portfolio');
+    const collection = db.collection<ContactSubmission>('contacts');
+
     // Create submission object
     const submission: ContactSubmission = {
-      id: Date.now().toString(),
       name: name.trim(),
       email: email.trim().toLowerCase(),
       subject: subject.trim(),
       message: message.trim(),
       projectType: body.projectType || 'Not specified',
-      timestamp: body.timestamp || new Date().toISOString(),
-      status: 'new'
+      timestamp: new Date(),
+      status: 'new',
+      ipAddress: request.headers.get('x-forwarded-for') || 
+                request.headers.get('x-real-ip') || 
+                'unknown'
     };
 
-    // Store submission (in production, save to database)
-    contactSubmissions.push(submission);
+    // Insert into database
+    const result = await collection.insertOne(submission);
 
-    // Log submission (remove in production)
-    console.log('New contact submission:', {
-      id: submission.id,
+    // Log success
+    console.log('✅ New contact submission saved:', {
+      id: result.insertedId,
       name: submission.name,
       email: submission.email,
       subject: submission.subject,
       timestamp: submission.timestamp
     });
 
+    // Optional: Send email notification
+    // await sendEmailNotification(submission);
+
     return NextResponse.json(
       { 
         success: true, 
         message: 'Message received successfully',
-        submissionId: submission.id 
+        submissionId: result.insertedId.toString()
       },
       { status: 200 }
     );
 
   } catch (error) {
-    console.error('Contact form error:', error);
+    console.error('❌ Contact form error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -80,32 +91,54 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET endpoint to view submissions (for admin panel)
+// GET endpoint to retrieve submissions (for admin panel)
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const adminKey = searchParams.get('key');
     
-    // Simple admin key check (use proper auth in production)
-    if (adminKey !== 'your-admin-key-here') {
+    // Check admin authentication
+    if (adminKey !== process.env.ADMIN_KEY) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
 
-    // Return all submissions sorted by newest first
-    const sortedSubmissions = contactSubmissions
-      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    // Connect to MongoDB
+    const client = await clientPromise;
+    const db = client.db('portfolio');
+    const collection = db.collection<ContactSubmission>('contacts');
+
+    // Get all submissions, sorted by newest first
+    const submissions = await collection
+      .find({})
+      .sort({ timestamp: -1 })
+      .toArray();
+
+    // Transform for frontend (convert ObjectId to string)
+    const transformedSubmissions = submissions.map(sub => ({
+      id: sub._id?.toString() || '',
+      name: sub.name,
+      email: sub.email,
+      subject: sub.subject,
+      message: sub.message,
+      projectType: sub.projectType,
+      timestamp: sub.timestamp.toISOString(),
+      status: sub.status,
+      updatedAt: sub.updatedAt?.toISOString()
+    }));
+
+    console.log(`📊 Retrieved ${transformedSubmissions.length} submissions from database`);
 
     return NextResponse.json({
       success: true,
-      submissions: sortedSubmissions,
-      total: sortedSubmissions.length
+      submissions: transformedSubmissions,
+      total: transformedSubmissions.length
     });
 
   } catch (error) {
-    console.error('GET submissions error:', error);
+    console.error('❌ GET submissions error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -117,29 +150,52 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, status, adminKey }: { id: string; status: ContactSubmission['status']; adminKey: string } = body;
+    const { id, status, adminKey }: { 
+      id: string; 
+      status: ContactSubmission['status']; 
+      adminKey: string;
+    } = body;
 
-    // Simple admin key check (use proper auth in production)
-    if (adminKey !== 'your-admin-key-here') {
+    // Check admin authentication
+    if (adminKey !== process.env.ADMIN_KEY) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
 
-    // Find and update submission
-    const submissionIndex = contactSubmissions.findIndex(sub => sub.id === id);
-    if (submissionIndex === -1) {
+    // Validate ObjectId
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json(
+        { error: 'Invalid submission ID' },
+        { status: 400 }
+      );
+    }
+
+    // Connect to MongoDB
+    const client = await clientPromise;
+    const db = client.db('portfolio');
+    const collection = db.collection<ContactSubmission>('contacts');
+
+    // Update submission
+    const result = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { 
+        $set: { 
+          status: status,
+          updatedAt: new Date()
+        }
+      }
+    );
+
+    if (result.matchedCount === 0) {
       return NextResponse.json(
         { error: 'Submission not found' },
         { status: 404 }
       );
     }
 
-    contactSubmissions[submissionIndex].status = status;
-    contactSubmissions[submissionIndex].updatedAt = new Date().toISOString();
-
-    console.log(`Updated submission ${id} status to: ${status}`);
+    console.log(`✅ Updated submission ${id} status to: ${status}`);
 
     return NextResponse.json({
       success: true,
@@ -147,10 +203,21 @@ export async function PUT(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('PUT submission error:', error);
+    console.error('❌ PUT submission error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
     );
   }
+}
+
+// Optional: Email notification function
+async function sendEmailNotification(submission: ContactSubmission) {
+  // TODO: Implement email notifications using:
+  // - Nodemailer + Gmail
+  // - SendGrid
+  // - Resend
+  // - AWS SES
+  
+  console.log('📧 Email notification would be sent here for:', submission.email);
 }
