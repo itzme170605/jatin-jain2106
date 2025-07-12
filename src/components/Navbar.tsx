@@ -6,22 +6,20 @@ import { Menu, X } from 'lucide-react';
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('home');
-//   const navItems = ['Home', 'About', 'Projects', 'Contact'];
+  
   const navItems = [
-  { title: 'Home' },
-  { title: 'About' },
-  {
-    title: 'Projects',
-    dropdown: [
-      'Full Stack Dev',
-      'VR / Unity / Blender',
-      'App Dev',
-      'Machine Learning',
-    ],
-  },
-  { title: 'Contact' },
-];
-
+    { title: 'Home' },
+    { title: 'About' },
+    {
+      title: 'Projects',
+      dropdown: [
+        { title: 'Full Stack Dev', id: 'full-stack-dev' },
+        { title: 'VR / Unity / Blender', id: 'vr-unity-blender' },
+        { title: 'Machine Learning', id: 'machine-learning' },
+      ],
+    },
+    { title: 'Contact' },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,53 +41,59 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (sectionId) => {
+    const target = document.getElementById(sectionId);
+    if (target) {
+      const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+    setOpen(false);
+  };
+
   return (
     <nav className="w-full fixed top-0 left-0 z-50 bg-black bg-opacity-60 backdrop-blur-md px-6 py-4 flex items-center justify-between">
       <div className="text-white text-xl font-semibold">Jatin.dev</div>
 
       {/* Desktop Nav */}
-        <ul className="hidden md:flex gap-8 text-white relative">
+      <ul className="hidden md:flex gap-8 text-white relative">
         {navItems.map((item) => (
-            <li key={item.title} className="relative group">
+          <li key={item.title} className="relative group">
             <span
-                onClick={() => {
-                const id = item.title.toLowerCase().replace(/ \/.*$/, '').replace(/\s+/g, '-');
-                const target = document.getElementById(id);
-                target?.scrollIntoView({ behavior: 'smooth' });
-                setOpen(false);
-                }}
-                className={`relative cursor-pointer pb-1 transition 
+              onClick={() => {
+                if (!item.dropdown) {
+                  const id = item.title.toLowerCase().replace(/\s+/g, '-');
+                  scrollToSection(id);
+                }
+              }}
+              className={`relative cursor-pointer pb-1 transition 
                 ${active === item.title.toLowerCase() ? 'text-blue-400' : 'text-white hover:text-gray-400'}
                 after:content-[''] after:block after:h-[2px] after:bg-blue-400 
                 after:scale-x-0 after:transition-transform after:origin-left 
                 group-hover:after:scale-x-100 ${active === item.title.toLowerCase() ? 'after:scale-x-100' : ''}`}
             >
-                {item.title}
+              {item.title}
             </span>
 
             {/* Dropdown */}
             {item.dropdown && (
-                <ul className="absolute left-0 top-8 bg-black bg-opacity-80 text-sm w-max rounded shadow-lg p-2 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition">
+              <ul className="absolute left-0 top-8 bg-black bg-opacity-90 backdrop-blur-md text-sm w-max rounded-lg shadow-lg p-2 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-200 border border-gray-700">
                 {item.dropdown.map((sub) => (
-                    <li
-                    key={sub}
-                    className="whitespace-nowrap px-4 py-2 hover:bg-gray-800 rounded cursor-pointer"
-                    onClick={() => {
-                        const id = sub.toLowerCase().replace(/ \/.*$/, '').replace(/\s+/g, '-');
-                        const target = document.getElementById(id);
-                        target?.scrollIntoView({ behavior: 'smooth' });
-                        setOpen(false);
-                    }}
-                    >
-                    {sub}
-                    </li>
+                  <li
+                    key={sub.id}
+                    className="whitespace-nowrap px-4 py-2 hover:bg-gray-800 rounded cursor-pointer transition-colors"
+                    onClick={() => scrollToSection(sub.id)}
+                  >
+                    {sub.title}
+                  </li>
                 ))}
-                </ul>
+              </ul>
             )}
-            </li>
+          </li>
         ))}
-        </ul>
-
+      </ul>
 
       {/* Mobile Menu Button */}
       <button onClick={() => setOpen(!open)} className="text-white md:hidden z-50">
@@ -98,44 +102,39 @@ export default function Navbar() {
 
       {/* Mobile Nav Panel */}
       {open && (
-        <ul className="md:hidden absolute top-0 left-0 w-full h-screen bg-black text-white flex flex-col items-center justify-center gap-10 text-2xl transition-all duration-300">
-            {navItems.map((item) => (
-                <div key={item.title} className="w-full text-center">
-                    <li
-                    onClick={() => {
-                        if (!item.dropdown) {
-                        const target = document.getElementById(item.title.toLowerCase().replace(/\s+/g, '-'));
-                        target?.scrollIntoView({ behavior: 'smooth' });
-                        setOpen(false);
-                        }
-                    }}
-                    className={`cursor-pointer text-2xl py-2 transition 
-                        ${active === item.title.toLowerCase() ? 'text-blue-400' : 'text-white hover:text-gray-400'}`}
+        <div className="md:hidden fixed inset-0 bg-black bg-opacity-95 backdrop-blur-md flex flex-col items-center justify-center gap-8 text-white text-xl transition-all duration-300">
+          {navItems.map((item) => (
+            <div key={item.title} className="text-center">
+              <div
+                onClick={() => {
+                  if (!item.dropdown) {
+                    const id = item.title.toLowerCase().replace(/\s+/g, '-');
+                    scrollToSection(id);
+                  }
+                }}
+                className={`cursor-pointer py-2 transition-colors ${
+                  active === item.title.toLowerCase() ? 'text-blue-400' : 'text-white hover:text-gray-400'
+                }`}
+              >
+                {item.title}
+              </div>
+
+              {item.dropdown && (
+                <div className="mt-4 space-y-3">
+                  {item.dropdown.map((sub) => (
+                    <div
+                      key={sub.id}
+                      onClick={() => scrollToSection(sub.id)}
+                      className="cursor-pointer text-sm text-gray-300 hover:text-blue-300 transition-colors py-1"
                     >
-                    {item.title}
-                    </li>
-
-                    {item.dropdown && (
-                    <ul className="text-sm text-white space-y-2 mt-2">
-                        {item.dropdown.map((sub) => (
-                        <li
-                            key={sub}
-                            onClick={() => {
-                            const target = document.getElementById(sub.toLowerCase().replace(/\s+/g, '-'));
-                            target?.scrollIntoView({ behavior: 'smooth' });
-                            setOpen(false);
-                            }}
-                            className="cursor-pointer hover:text-blue-300"
-                        >
-                            {sub}
-                        </li>
-                        ))}
-                    </ul>
-                    )}
+                      {sub.title}
+                    </div>
+                  ))}
                 </div>
-                ))}
-
-        </ul>
+              )}
+            </div>
+          ))}
+        </div>
       )}
     </nav>
   );
