@@ -36,7 +36,7 @@ const projectData: ProjectData = {
         type: 'Mobile App'
       },
       {
-        title: 'Cyber_security Dashboard',
+        title: 'Cyber-security Dashboard',
         description: 'Mental wellness journaling app with animation-driven UI',
         tech: ['Python', 'Flask', 'MITRE','ATT&CO','OTX'],
         image: '/moon_texture.jpg',
@@ -100,7 +100,7 @@ const projectData: ProjectData = {
         type: 'Simulation'
       },
       {
-        title: 'Amaxon Product Recomendation system',
+        title: 'Amazon Product Recomendation system',
         description: 'Real-time amazon product recomender based on your location and peers',
         tech: ['TensorFlow', 'FastAPI', 'BERT'],
         image: '/moon_texture.jpg',
