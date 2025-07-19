@@ -26,11 +26,20 @@ const projectData: ProjectData = {
   'full-stack-dev': {
     title: 'Full Stack & Mobile Development',
     projects: [
+        {
+        title: 'Diabetes-Drug Simulator',
+        description: 'Simulated NEFA-glucose dynamics using ODEs with React UI',
+        tech: ['Python', 'SciPy', 'React', 'D3.js'],
+        image: '/diabetes_simulation.png',
+        github: 'https://github.com/itzme170605',
+        demo: '#',
+        type: 'Simulation-web app'
+      },
       {
         title: 'Downtheline',
         description: 'Aesthetic collaborative watchlist app built with Flutter & Firebase',
         tech: ['Flutter', 'Firebase', 'Dart','Figma'],
-        image: '/moon_texture.jpg', 
+        image: '/Downtheline.png', 
         github: 'https://github.com/itzme170605',
         demo: '#',
         type: 'Mobile app'
@@ -44,15 +53,15 @@ const projectData: ProjectData = {
         demo: '#',
         type: 'Web app'
       },
-      {
-        title: 'Social Media Dashboard',
-        description: 'Analytics dashboard for social media management',
-        tech: ['React', 'Express', 'Chart.js'],
-        image: '/moon_texture.jpg',
-        github: 'https://github.com/itzme170605',
-        demo: '#',
-        type: 'Web App'
-      }
+      // {
+      //   title: 'Social Media Dashboard',
+      //   description: 'Analytics dashboard for social media management',
+      //   tech: ['React', 'Express', 'Chart.js'],
+      //   image: '/moon_texture.jpg',
+      //   github: 'https://github.com/itzme170605',
+      //   demo: '#',
+      //   type: 'Web App'
+      // }
     ]
   },
   'vr-unity-blender': {
@@ -71,7 +80,7 @@ const projectData: ProjectData = {
         title: 'AR Furniture Placement',
         description: 'Augmented reality app for furniture visualization',
         tech: ['Unity', 'ARCore', 'ARKit'],
-        image: '/moon_texture.jpg',
+        image: '/furniture_design.jpg',
         github: 'https://github.com/itzme170605',
         demo: '#',
         type: 'AR App'
@@ -85,7 +94,7 @@ const projectData: ProjectData = {
         title: 'ASL Sign Language Detector',
         description: 'ResNet-18 based hand gesture recognition with ONNX',
         tech: ['Python', 'PyTorch', 'ONNX', 'OpenCV'],
-        image: '/moon_texture.jpg',
+        image: '/',
         github: 'https://github.com/itzme170605',
         demo: '#',
         type: 'Computer Vision'
@@ -94,7 +103,7 @@ const projectData: ProjectData = {
         title: 'Diabetes-Drug Simulator',
         description: 'Simulated NEFA-glucose dynamics using ODEs with React UI',
         tech: ['Python', 'SciPy', 'React', 'D3.js'],
-        image: '/diabetes_simulations.png',
+        image: '/diabetes_simulation.png',
         github: 'https://github.com/itzme170605',
         demo: '#',
         type: 'Simulation'
@@ -103,7 +112,7 @@ const projectData: ProjectData = {
         title: 'Amazon Product Recomendation system',
         description: 'Real-time amazon product recomender based on your location and peers',
         tech: ['TensorFlow', 'FastAPI', 'BERT'],
-        image: '/moon_texture.jpg',
+        image: '/amazon.png',
         github: 'https://github.com/itzme170605',
         demo: '#',
         type: 'NLP'
