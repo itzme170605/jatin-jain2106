@@ -36,22 +36,13 @@ const projectData: ProjectData = {
         type: 'Mobile App'
       },
       {
-        title: 'MoodMate',
+        title: 'Cyber_security Dashboard',
         description: 'Mental wellness journaling app with animation-driven UI',
-        tech: ['React Native', 'Node.js', 'MongoDB'],
+        tech: ['Python', 'Flask', 'MITRE','ATT&CO','OTX'],
         image: '/moon_texture.jpg',
         github: 'https://github.com/itzme170605',
         demo: '#',
         type: 'Mobile App'
-      },
-      {
-        title: 'E-Commerce Platform',
-        description: 'Full-stack e-commerce solution with real-time features',
-        tech: ['Next.js', 'PostgreSQL', 'Stripe'],
-        image: '/moon_texture.jpg',
-        github: 'https://github.com/itzme170605',
-        demo: '#',
-        type: 'Web App'
       },
       {
         title: 'Social Media Dashboard',
@@ -67,15 +58,6 @@ const projectData: ProjectData = {
   'vr-unity-blender': {
     title: 'VR / Unity / Blender',
     projects: [
-      {
-        title: 'VR Campus Tour',
-        description: 'Immersive RIT campus virtual reality experience',
-        tech: ['Unity', 'Blender', 'C#', 'VR SDK'],
-        image: '/moon_texture.jpg',
-        github: 'https://github.com/itzme170605',
-        demo: '#',
-        type: 'VR Experience'
-      },
       {
         title: 'Lunar Lander 3D',
         description: 'Physics-based moon landing simulation in Unreal Engine',
@@ -109,7 +91,7 @@ const projectData: ProjectData = {
         type: 'Computer Vision'
       },
       {
-        title: 'Wound Healing Simulator',
+        title: 'Diabetes-Drug Simulator',
         description: 'Simulated NEFA-glucose dynamics using ODEs with React UI',
         tech: ['Python', 'SciPy', 'React', 'D3.js'],
         image: '/moon_texture.jpg',
@@ -118,8 +100,8 @@ const projectData: ProjectData = {
         type: 'Simulation'
       },
       {
-        title: 'Sentiment Analysis API',
-        description: 'Real-time sentiment analysis for social media posts',
+        title: 'Amaxon Product Recomendation system',
+        description: 'Real-time amazon product recomender based on your location and peers',
         tech: ['TensorFlow', 'FastAPI', 'BERT'],
         image: '/moon_texture.jpg',
         github: 'https://github.com/itzme170605',
