@@ -94,7 +94,7 @@ const projectData: ProjectData = {
         title: 'Diabetes-Drug Simulator',
         description: 'Simulated NEFA-glucose dynamics using ODEs with React UI',
         tech: ['Python', 'SciPy', 'React', 'D3.js'],
-        image: '/moon_texture.jpg',
+        image: '/diabetes_simulations.png',
         github: 'https://github.com/itzme170605',
         demo: '#',
         type: 'Simulation'
