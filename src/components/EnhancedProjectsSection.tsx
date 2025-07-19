@@ -29,20 +29,20 @@ const projectData: ProjectData = {
       {
         title: 'Downtheline',
         description: 'Aesthetic collaborative watchlist app built with Flutter & Firebase',
-        tech: ['Flutter', 'Firebase', 'Dart'],
+        tech: ['Flutter', 'Firebase', 'Dart','Figma'],
         image: '/moon_texture.jpg', 
         github: 'https://github.com/itzme170605',
         demo: '#',
-        type: 'Mobile App'
+        type: 'Mobile app'
       },
       {
-        title: 'Cyber-security Dashboard',
-        description: 'Mental wellness journaling app with animation-driven UI',
+        title: 'security Dashboard',
+        description: 'Cyber Security dashboard for network analysis',
         tech: ['Python', 'Flask', 'MITRE','ATT&CO','OTX'],
-        image: '/moon_texture.jpg',
+        image: '/security_systems_dashboard.png',
         github: 'https://github.com/itzme170605',
         demo: '#',
-        type: 'Mobile App'
+        type: 'Web app'
       },
       {
         title: 'Social Media Dashboard',

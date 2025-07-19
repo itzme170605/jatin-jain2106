@@ -65,7 +65,7 @@ export default function Home() {
               className="relative z-10"
             >
               <h1 className="text-5xl sm:text-6xl font-bold leading-tight">
-                Welcome to My Space! 
+                Welcome to My Space 
                 <span className="block text-blue-400 mt-2">XD</span>
               </h1>
               <motion.p 
