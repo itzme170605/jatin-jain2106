@@ -70,7 +70,7 @@ const projectData: ProjectData = {
       {
         title: 'Lunar Lander 3D',
         description: 'Physics-based moon landing simulation in Unreal Engine',
-        tech: ['Unreal Engine', 'Blueprint', 'Physics'],
+        tech: ['Unreal Engine', 'Physics'],
         image: '/moon_texture.jpg',
         github: 'https://github.com/itzme170605',
         demo: '#',
@@ -79,7 +79,7 @@ const projectData: ProjectData = {
       {
         title: 'AR Furniture Placement',
         description: 'Augmented reality app for furniture visualization',
-        tech: ['Unity', 'ARCore', 'ARKit'],
+        tech: ['Unity', 'ARCore', 'ARKit', 'ARFoundation','C#'],
         image: '/furniture_design.jpg',
         github: 'https://github.com/itzme170605',
         demo: '#',
